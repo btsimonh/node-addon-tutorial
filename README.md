@@ -1,3 +1,20 @@
+# Modified to test cloning of native objects.
+
+Clone repo.
+
+cd VectorExample
+
+npm install
+
+This will build VectorExample, and install the modified version of clone from https://github.com/btsimonh/clone/tree/_clone
+
+then run 'npm start' or node index.js
+
+
+
+
+
+
 # Tutorial to Native Node.js Modules with C++
 A simple tutorial for creating native c++ addons for nodejs using Nan. This is the repository for the article series:
 

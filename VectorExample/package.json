@@ -8,6 +8,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
+    "clone": "git+https://github.com/btsimonh/clone.git#_clone",
     "nan": "^2.7.0"
   },
   "repository": {
