@@ -142,3 +142,65 @@ try{
 
 
 
+
+console.log("//////////////////////////////////////////////////////////\nadditional failure noticed cloning http response (like Node-Red avoids doing) :")
+
+
+var https = require('https');
+
+
+
+const url =
+  "https://maps.googleapis.com/maps/api/geocode/json?address=Florence";
+https.get(url, res => {
+
+  try{
+    var message = { res: res, payload: 'hello' };
+    var resclone = clone(message);
+      res.setEncoding("utf8");
+      let body = "";
+      res.on("data", data => {
+        body += data;
+      });
+      res.on("end", () => {
+        var message = { res: res, payload: 'hello' };
+        try{
+            body = JSON.parse(body);
+            console.log('\n\nworking');
+            console.log( res.headers );
+        } catch(e){
+            console.log('\n\nbroken:'+util.inspect(e));
+        }
+      });
+
+
+  } catch(e){
+    console.log('\n\nbroken:'+util.inspect(e));
+  }
+  
+});
+
+https.get(url, res => {
+
+  // cause clone of res to actually be a reference, like they do in Node-Red.
+  res._clone = function(){ return this; };  
+  
+  res.setEncoding("utf8");
+  let body = "";
+  res.on("data", data => {
+    body += data;
+  });
+  res.on("end", () => {
+    var message = { res: res, payload: 'hello' };
+    try{
+        var resclone = clone(message);
+
+        body = JSON.parse(body);
+        console.log('\n\nworking with _clone->ref');
+        console.log( res.headers );
+    } catch(e){
+        console.log('\n\nbroken with _clone->ref:'+util.inspect(e));
+    }
+  });
+});
+
